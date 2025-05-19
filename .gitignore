@@ -1,2 +1,4 @@
 node_modules/
-.env
+.env            # main env file
+.env.*          # .env.production, .env.local, etc.
+!.env.example   # keep a non‑secret template tracked
