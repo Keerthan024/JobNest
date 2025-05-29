@@ -3,8 +3,16 @@
 ## Project Overview
 **JobNest** is a full-stack job portal built with the MERN stack (MongoDB, Express.js, React.js, Node.js). It connects job seekers with recruiters, enabling seamless job searching, application management, and resume uploads. Recruiters can post new openings, review applications, and manage job listings. The platform includes secure authentication using **Clerk** and real-time error tracking and performance monitoring using **Sentry**.
 
+## 🌐 Live Demo
+
+👉 [Visit JobNest](https://job-nest-client-coral.vercel.app/)
+
+---
+
 ## Main Goal
-The primary goal of **JobNest+** is to offer a robust, user-friendly platform that bridges the gap between talent and opportunity. The platform allows job seekers to explore and apply for jobs online, while recruiters can efficiently manage job listings and applications in a centralized dashboard.
+The primary goal of **JobNest** is to offer a robust, user-friendly platform that bridges the gap between talent and opportunity. The platform allows job seekers to explore and apply for jobs online, while recruiters can efficiently manage job listings and applications in a centralized dashboard.
+
+---
 
 ## Key Features
 
