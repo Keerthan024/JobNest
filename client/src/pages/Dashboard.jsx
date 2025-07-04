@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { NavLink, Outlet, useNavigate, useLocation } from "react-router-dom";
 import { assets } from "../assets/assets";
@@ -9,6 +9,7 @@ import {
   FiUsers,
   FiLogOut,
   FiChevronRight,
+  FiChevronDown,
 } from "react-icons/fi";
 
 const Dashboard = () => {
@@ -16,6 +17,8 @@ const Dashboard = () => {
   const location = useLocation();
   const { companyData, setCompanyData, setCompanyToken } =
     useContext(AppContext);
+
+    const [showLogout, setShowLogout] = useState(false);
 
   // Function to logout for company
   const logout = () => {
@@ -91,60 +94,90 @@ const Dashboard = () => {
       className="min-h-screen bg-gray-50"
     >
       {/* Navbar */}
-      <motion.div
+      <motion.nav
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        className="bg-white shadow-sm py-4 px-6 flex justify-between items-center sticky top-0 z-10"
+        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        className="bg-white/80 backdrop-blur-md border-b border-gray-100 py-3 px-6 flex justify-between items-center sticky top-0 z-50"
       >
+        {/* Logo */}
         <motion.div
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => navigate("/")}
-          className="cursor-pointer"
+          className="cursor-pointer flex items-center gap-2"
         >
-          <img className="h-8" src={assets.logo} alt="Logo" />
+          <motion.img
+            className="h-8"
+            src={assets.logo}
+            alt="Logo"
+            whileHover={{ rotate: [0, -5, 5, 0] }}
+            transition={{ duration: 0.5 }}
+          />
+          <span className="hidden sm:inline-block text-xl font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+            {companyData.name}
+          </span>
         </motion.div>
 
         {companyData && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="flex items-center gap-4"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+            className="flex items-center gap-4 relative"
           >
-            <p className="hidden md:block text-gray-700">
-              Welcome, <span className="font-medium">{companyData.name}</span>
-            </p>
+            {/* Welcome message */}
+            <motion.p
+              className="hidden md:block text-gray-600 text-sm"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+            >
+              Welcome back,{" "}
+              <span className="font-medium text-gray-800">
+                {companyData.name.split(" ")[0]}
+              </span>
+            </motion.p>
 
-            <div className="relative group">
-              <motion.div
+            {/* Profile image with logout */}
+            <div className="relative">
+              <motion.button
+                onClick={() => setShowLogout(!showLogout)}
                 whileHover={{ scale: 1.05 }}
-                className="cursor-pointer"
+                whileTap={{ scale: 0.95 }}
+                className="focus:outline-none"
               >
                 <img
-                  className="w-10 h-10 rounded-full object-cover border-2 border-white shadow"
+                  className="w-9 h-9 rounded-full object-cover border-2 border-white shadow-md"
                   src={companyData.image}
                   alt="Company logo"
                 />
-              </motion.div>
+              </motion.button>
 
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 0 }}
-                whileHover={{ opacity: 1, y: 0 }}
-                className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20"
-              >
-                <button
-                  onClick={logout}
-                  className="flex items-center gap-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                >
-                  <FiLogOut />
-                  <span>Logout</span>
-                </button>
-              </motion.div>
+              <AnimatePresence>
+                {showLogout && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="absolute right-0 mt-2 bg-white rounded-lg shadow-lg py-1 z-50 border border-gray-200"
+                  >
+                    <motion.button
+                      onClick={logout}
+                      whileHover={{ backgroundColor: "#FEF2F2" }}
+                      whileTap={{ scale: 0.98 }}
+                      className="w-full px-4 py-2 text-sm flex items-center gap-2 text-red-600 hover:bg-red-50"
+                    >
+                      <FiLogOut className="text-base" />
+                      <span>Sign out</span>
+                    </motion.button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </motion.div>
         )}
-      </motion.div>
+      </motion.nav>
 
       <div className="flex flex-col md:flex-row">
         {/* Sidebar */}
